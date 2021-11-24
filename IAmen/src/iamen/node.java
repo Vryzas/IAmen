@@ -6,7 +6,7 @@ package iamen;
 import java.util.HashMap;
 import java.lang.Integer;
 
-public class node {
+public class node{
     
     //vars
     private String nodename = "knowhere";
@@ -51,14 +51,19 @@ public class node {
     //groups the edges names into an array for return
     public node[] getTree(){
         node[] a;
-        a = vertices.keySet().toArray(new node[vertices.size()]);
-        
+        a = vertices.keySet().toArray(new node[vertices.size()]);        
         return a;
     }
     //returns distance to the node 
-    public int getDistance(node name) {
-        return vertices.get(name);
+    public int getDistance(String name) {
+        int ret = 0;
+        node z[]= getTree();
+        for (node z1 : z) {
+            if (z1.getNodename().equals(name)){
+                ret = vertices.get(z1);
+            } 
+        }
+        return ret;
     }
-    
-    
+        
 }
