@@ -110,8 +110,9 @@ public class IAmen {
         }
     }
     
-    public static void aStar(node [] alfa){
-        /*
+    /*
+        *include a total cost variable
+        include an extimated cost variable (total cost + estimation)
         step 1 save alfa[0] vertices to an array with .getTree()
         step 2 find the shortest distance in the vertices
         step 3 replace the array with the next vertice 'vertices'
@@ -121,6 +122,8 @@ public class IAmen {
         step 7 else return to alfa[0] and go with 2nd shortest vertice
         step 8 go step 3 in 2nd shotest vertice
         */
+    public static void aStar(node [] alfa){
+        
     }
     
     public static void main(String[] args) { 
