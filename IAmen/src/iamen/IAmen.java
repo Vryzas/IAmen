@@ -148,6 +148,7 @@ public class IAmen {
         }
         return ret;
     }
+ 
     /*
         *include a total cost variable
         include an extimated cost variable (total cost + estimation)
@@ -159,8 +160,7 @@ public class IAmen {
         step 6 if shorter step3
         step 7 else return to alfa[0] and go with 2nd shortest vertice
         step 8 go step 3 in 2nd shortest vertice
-        */
-    
+        */ 
     
     public static void aStar(node[] alfa, String[] path){
         int cam = 0;
@@ -168,8 +168,7 @@ public class IAmen {
         String next = path[cam];//next node to visit
         node[] z = alfa[rout].getTree();//vertices from root node
         node end = alfa[alfa.length-1];//last node of the chosen path
-        node nextnode = findNext(z, end);
-        
+        node nextnode = findNext(z, end);      
     }
     
     public static void main(String[] args) {
