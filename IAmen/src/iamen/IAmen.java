@@ -116,7 +116,32 @@ public class IAmen {
             System.out.println("-----");
         }
     }
-    /*for estimation h(n) nr of path nodes * 50km if node in path -50 else -0*/
+    
+    /*direct path estimation
+    lat = |latA-latB|
+    lon = |lonA-lonB|
+    lat *40% of 25km + lon *40%30km
+    */
+    public static int estimator(node a, node b){
+        int lat =(int) ((a.getLat()-b.getLat()) * (0.45*25));
+        int lon = (int) (a.getLon()-b.getLon() * (0.45*30));
+        if (lat < 0){
+            lat = lat * -1;
+        }
+        if (lon < 0){
+            lon = lon * -1;
+        }
+        return lat+lon;
+    }
+    
+    //next node finder
+    public static node findNext(node[] zed, node end){
+        int besth = estimator(zed[0], end);
+        for (int i = 0; i <zed.length; i++){
+            
+        }
+        return ;
+    }
     /*
         *include a total cost variable
         include an extimated cost variable (total cost + estimation)
@@ -129,14 +154,22 @@ public class IAmen {
         step 7 else return to alfa[0] and go with 2nd shortest vertice
         step 8 go step 3 in 2nd shortest vertice
         */
+    
+    
     public static void aStar(node[] alfa, String[] path){
+        int cam = 0;
+        int rout = 0;
+        String next = path[cam];//next node to visit
+        node[] z = alfa[rout].getTree();//vertices from root node
+        node end = alfa[alfa.length-1];//last node of the chosen path
+        node nextnode = findNext(z, end);
         
     }
     
     public static void main(String[] args) {
         
         Scanner read= new Scanner(System.in);
-        String[] path = new String[18];
+        
         node alfa[] = new node[18];
         alfaNodes(alfa);      
         alfaInsert(alfa);
@@ -144,6 +177,7 @@ public class IAmen {
         
         System.out.println("Inserir número de paragens: ");
         int a = read.nextInt();//path stops
+        String[] path = new String[a];
         for (int i = 0; i < a; i++){
             //loop insert for full path stop names
         }
