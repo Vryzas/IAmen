@@ -1,11 +1,13 @@
 
 package iamen;
 
+import java.util.Scanner;
 /**
  *
  * @author Vryzas
  */
 public class IAmen {
+    
     /*
     van = 20 "slots"
     1big package = 9
@@ -15,27 +17,31 @@ public class IAmen {
     4m + 4s or 3m + 8s or 2m + 12s or 1m + 16s
     20s
     */
-    public static void alfaNodes(node[] alfa){//creates the nodes list
-        alfa[0] = new node("Porto - Garagem", true);
-        alfa[1] = new node("Lisboa", true);
-        alfa[2] = new node("Braga", false);
-        alfa[3] = new node("Aveiro", false);
-        alfa[4] = new node("Guimarães", true);
-        alfa[5] = new node("Viana do Castelo", true);
-        alfa[6] = new node("Bragança", false);
-        alfa[7] = new node("Vila Real", true);
-        alfa[8] = new node("Amarante", false);
-        alfa[9] = new node("Póvoa de Varzim", false);
-        alfa[10] = new node("Viseu", true);
-        alfa[11] = new node("Figueira da Foz", false);
-        alfa[12] = new node("Coimbra", true);
-        alfa[13] = new node("Santarém", false);
-        alfa[14] = new node("Guarda", false);
-        alfa[15] = new node("Castelo branco", false);
-        alfa[16] = new node("Évora", true);
-        alfa[17] = new node("Setúbal", false);
+    
+    //creates the nodes list
+    public static void alfaNodes(node[] alfa){
+        alfa[0] = new node("Porto - Garagem", true,6,1);
+        alfa[1] = new node("Lisboa", true,18,1);
+        alfa[2] = new node("Braga", false,3,3);
+        alfa[3] = new node("Aveiro", false,10,1);
+        alfa[4] = new node("Guimarães", true,4,4);
+        alfa[5] = new node("Viana do Castelo", true,2,1);
+        alfa[6] = new node("Bragança", false,2,9);
+        alfa[7] = new node("Vila Real", true,6,6);
+        alfa[8] = new node("Amarante", false,6,4);
+        alfa[9] = new node("Póvoa de Varzim", false,4,1);
+        alfa[10] = new node("Viseu", true,10,5);
+        alfa[11] = new node("Figueira da Foz", false,13,1);
+        alfa[12] = new node("Coimbra", true,12,3);
+        alfa[13] = new node("Santarém", false,16,4);
+        alfa[14] = new node("Guarda", false,10,8);
+        alfa[15] = new node("Castelo branco", false,14,8);
+        alfa[16] = new node("Évora", true,20,6);
+        alfa[17] = new node("Setúbal", false,20,1);
     }
-    public static void alfaInsert(node[] alfa){//creates the node tree
+    
+    //creates the node tree
+    public static void alfaInsert(node[] alfa){
         alfa[0].insertVertice(alfa[9],38);
         alfa[0].insertVertice(alfa[2],56);
         alfa[0].insertVertice(alfa[8],61);
@@ -94,7 +100,8 @@ public class IAmen {
         alfa[6].insertVertice(alfa[7],118);
     }
     
-    public static void printAlfa(node [] alfa){//prints the tree by node order and distance
+    //prints the tree by node order and distance
+    public static void printAlfa(node [] alfa){
         for (node alfa1 : alfa) {
             node[] z = alfa1.getTree();
             System.out.println(alfa1.getNodename() + " tem ligação a:");
@@ -109,7 +116,7 @@ public class IAmen {
             System.out.println("-----");
         }
     }
-    
+    /*for estimation h(n) nr of path nodes * 50km if node in path -50 else -0*/
     /*
         *include a total cost variable
         include an extimated cost variable (total cost + estimation)
@@ -120,16 +127,25 @@ public class IAmen {
         step 5 compare with previous 
         step 6 if shorter step3
         step 7 else return to alfa[0] and go with 2nd shortest vertice
-        step 8 go step 3 in 2nd shotest vertice
+        step 8 go step 3 in 2nd shortest vertice
         */
-    public static void aStar(node [] alfa){
+    public static void aStar(node[] alfa, String[] path){
         
     }
     
-    public static void main(String[] args) { 
+    public static void main(String[] args) {
+        
+        Scanner read= new Scanner(System.in);
+        String[] path = new String[18];
         node alfa[] = new node[18];
         alfaNodes(alfa);      
         alfaInsert(alfa);
         printAlfa(alfa);
+        
+        System.out.println("Inserir número de paragens: ");
+        int a = read.nextInt();//path stops
+        for (int i = 0; i < a; i++){
+            //loop insert for full path stop names
+        }
     }
 }
