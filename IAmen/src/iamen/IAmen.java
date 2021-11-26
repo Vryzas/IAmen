@@ -122,7 +122,7 @@ public class IAmen {
     lon = |lonA-lonB|
     lat *40% of 25km + lon *40%30km
     */
-    public static int estimator(node a, node b){
+    public static int heuristic(node a, node b){
         int lat =(int) ((a.getLat()-b.getLat()) * (0.45*25));
         int lon = (int) (a.getLon()-b.getLon() * (0.45*30));
         if (lat < 0){
@@ -136,11 +136,17 @@ public class IAmen {
     
     //next node finder
     public static node findNext(node[] zed, node end){
-        int besth = estimator(zed[0], end);
+        int besth = heuristic(zed[0], end);
+        int heur;
+        node ret = null;
         for (int i = 0; i <zed.length; i++){
-            
+            heur = heuristic(zed[i], end);
+            if (heur < besth){
+                besth = heur;
+                ret = zed[i];
+            }
         }
-        return ;
+        return ret;
     }
     /*
         *include a total cost variable
@@ -173,10 +179,10 @@ public class IAmen {
         node alfa[] = new node[18];
         alfaNodes(alfa);      
         alfaInsert(alfa);
-        printAlfa(alfa);
+        printAlfa(alfa);//coment to disable
         
         System.out.println("Inserir número de paragens: ");
-        int a = read.nextInt();//path stops
+        int a = read.nextInt();//insert the nr of path stops
         String[] path = new String[a];
         for (int i = 0; i < a; i++){
             //loop insert for full path stop names
