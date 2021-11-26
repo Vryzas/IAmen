@@ -134,21 +134,22 @@ public class IAmen {
         return lat+lon;
     }
     
-    //next node finder
-    public static node findNext(node[] zed, node end){
+     //next node finder
+    public static node findNext(HashMap zed, node end){
+        /*https://www.geeksforgeeks.org/traverse-through-a-hashmap-in-java/
         int besth = heuristic(zed[0], end);
-        int heur;
+        int heur;*/
         node ret = null;
-        for (int i = 0; i <zed.length; i++){
+       /* for (int i = 0; i <zed.length; i++){
             heur = heuristic(zed[i], end);
             if (heur < besth){
                 besth = heur;
                 ret = zed[i];
             }
-        }
+        }*/
         return ret;
     }
- 
+    
     /*
         *include a total cost variable
         include an extimated cost variable (total cost + estimation)
@@ -160,15 +161,17 @@ public class IAmen {
         step 6 if shorter step3
         step 7 else return to alfa[0] and go with 2nd shortest vertice
         step 8 go step 3 in 2nd shortest vertice
-        */ 
+        */
+    
     
     public static void aStar(node[] alfa, String[] path){
         int cam = 0;
         int rout = 0;
         String next = path[cam];//next node to visit
-        node[] z = alfa[rout].getTree();//vertices from root node
+        HashMap<node, Integer> z = alfa[rout].getVertices();//vertices from root node
         node end = alfa[alfa.length-1];//last node of the chosen path
-        node nextnode = findNext(z, end);      
+        node nextnode = findNext(z, end);//finds the next node to go to
+        System.out.println(nextnode.getNodename());
     }
     
     public static void main(String[] args) {
@@ -178,13 +181,17 @@ public class IAmen {
         node alfa[] = new node[18];
         alfaNodes(alfa);      
         alfaInsert(alfa);
-        printAlfa(alfa);//coment to disable
+        //printAlfa(alfa);//uncoment to enable
         
         System.out.println("Inserir número de paragens: ");
         int a = read.nextInt();//insert the nr of path stops
         String[] path = new String[a];
+        read.nextLine();
         for (int i = 0; i < a; i++){
+            System.out.println("insere o proximo nó do caminho:");
+            path[i] = read.nextLine();
             //loop insert for full path stop names
         }
+        aStar(alfa, path);
     }
 }
