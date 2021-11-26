@@ -11,16 +11,37 @@ public class node{
     //vars
     private String nodename = "knowhere";
     private boolean gas = false;
+    private int lat = 0;
+    private int lon = 0;
     private HashMap<node, Integer> vertices = new HashMap<>();
     
-    public node(String name, boolean a){
+    //construct
+    public node(String name, boolean a, int lat, int lon){
         nodename = name;
         gas = a;
-    }//construct
+        this.lat = lat;
+        this.lon = lon;
+    }
     
     //node tag
     public String getNodename() {
         return nodename;
+    }
+
+    public int getLat() {
+        return lat;
+    }
+
+    public void setLat(int lat) {
+        this.lat = lat;
+    }
+
+    public int getLon() {
+        return lon;
+    }
+
+    public void setLon(int lon) {
+        this.lon = lon;
     }
     
     //unnecessary...
@@ -67,3 +88,4 @@ public class node{
     }
         
 }
+
