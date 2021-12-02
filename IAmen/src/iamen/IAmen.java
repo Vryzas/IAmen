@@ -1,6 +1,5 @@
 package iamen;
 
-import java.util.HashMap;
 import java.util.Scanner;
 /**
  *
@@ -27,18 +26,18 @@ public class IAmen {
         alfa[3] = new node("Aveiro", false,10,1);
         alfa[4] = new node("Guimaraes", true,4,4);
         alfa[5] = new node("Viana do Castelo", true,2,1);
-        alfa[6] = new node("Bragança", false,2,9);
+        alfa[6] = new node("Braganca", false,2,9);
         alfa[7] = new node("Vila Real", false,5,7);
         alfa[8] = new node("Amarante", false,6,5);
-        alfa[9] = new node("Póvoa de Varzim", false,4,1);
+        alfa[9] = new node("Povoa de Varzim", false,4,1);
         alfa[10] = new node("Viseu", true,10,6);
         alfa[11] = new node("Figueira da Foz", false,13,1);
         alfa[12] = new node("Coimbra", true,12,3);
-        alfa[13] = new node("Santarém", false,16,4);
+        alfa[13] = new node("Santarem", false,16,4);
         alfa[14] = new node("Guarda", false,10,8);
-        alfa[15] = new node("Castelo branco", false,14,8);
-        alfa[16] = new node("Évora", true,20,6);
-        alfa[17] = new node("Setúbal", false,20,1);
+        alfa[15] = new node("Castelo Branco", false,14,8);
+        alfa[16] = new node("Evora", true,20,6);
+        alfa[17] = new node("Setubal", false,20,1);
     }
     
     //creates the node tree
@@ -205,8 +204,6 @@ public class IAmen {
         
         Scanner read= new Scanner(System.in);
         
-        node alfa[] = new node[18];
-
         alfaNodes(alfa);      
         alfaInsert(alfa);
         //printAlfa(alfa);//uncoment to enable
@@ -215,11 +212,14 @@ public class IAmen {
         int a = read.nextInt();//insert the nr of path stops
         String[] path = new String[a];
         read.nextLine();
+        
+        System.out.println("Listar paragens - Introduzir nomes dos locais de entrega: ");
         for (int i = 0; i < a; i++){
-
-            System.out.println("Listar paragens - Introduzir nomes dos locais de entrega: ");
             path[i] = read.nextLine();//loop insert for full path stop names
         }
+        System.out.println("Partida do: ");
+        System.out.println(alfa[0].getNodename());
         aStar(alfa[0], path, 0);
+        
     }
 }
