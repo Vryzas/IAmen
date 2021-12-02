@@ -3,8 +3,8 @@
  */
 package iamen;
 
-import java.util.HashMap;
-import java.lang.Integer;
+
+import java.util.ArrayList;
 
 public class node{
     
@@ -13,8 +13,11 @@ public class node{
     private boolean gas = false;
     private int lat = 0;
     private int lon = 0;
-    private HashMap<node, Integer> vertices = new HashMap<>();
-    
+    private ArrayList<vertex> vertices = new ArrayList<>();
+
+    public node() {
+    }
+          
     //construct
     public node(String name, boolean a, int lat, int lon){
         nodename = name;
@@ -56,35 +59,46 @@ public class node{
     public void setGas(boolean gas) {//gas station construction/demolish
         this.gas = gas;
     }
-    //defaults maybe useful
-    public HashMap<node, Integer> getVertices() {
+    
+//defaults maybe useful
+    public ArrayList<vertex> getVertices() {
         return vertices;
     }
     
-    public void setVertices(HashMap<node, Integer> vertices) {
+    public void setVertices(ArrayList<vertex> vertices) {
         this.vertices = vertices;
     }
     
     public void insertVertice(node a, int b){
-        vertices.put(a,b);
+        vertex c = new vertex(a, b);
+        vertices.add(c);
     }
     
     //groups the edges names into an array for return
     public node[] getTree(){
-        node[] a;
-        a = vertices.keySet().toArray(new node[vertices.size()]);        
+        node[] a = new node[vertices.size()];
+        int j = 0;
+        for (int i = 0; i < vertices.size(); i++){
+            if ( vertices.get(i) != null){
+                a[j] = vertices.get(i).getNodex();
+                j++;
+            }
+        }
         return a;
     }
+    
     //returns distance to the node 
     public int getDistance(String name) {
-        int ret = 0;
-        node z[]= getTree();
-        for (node z1 : z) {
-            if (z1.getNodename().equals(name)){
-                ret = vertices.get(z1);
-            } 
+        int ret = 0; 
+        for (int i = 0; i < vertices.size(); i++){
+            if ( vertices.get(i) != null){
+                if(name.equals(vertices.get(i).getNodex().getNodename())){
+                    ret = vertices.get(i).getDistancex();
+                }
+            }
         }
         return ret;
     }
         
 }
+
