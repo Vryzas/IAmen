@@ -205,8 +205,6 @@ public class IAmen {
         
         Scanner read= new Scanner(System.in);
         
-        node alfa[] = new node[18];
-
         alfaNodes(alfa);      
         alfaInsert(alfa);
         //printAlfa(alfa);//uncoment to enable
