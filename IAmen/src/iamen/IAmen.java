@@ -1,5 +1,6 @@
 package iamen;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 /**
  *
@@ -9,6 +10,7 @@ public class IAmen {
     
     static node alfa[] = new node[18];
     static van v = new van();
+    static ArrayList<node> myway = new ArrayList<>();
     /*
     van = 20 "slots"
     1big package = 9
@@ -144,7 +146,7 @@ public class IAmen {
     //finds the next node in path
     public static node nextVertex(node[] beta, String[] path, node root){
         node ret = new node();//return node
-        int tempheur = 200;//temporay heuristic
+        int tempheur = 200;//temporary heuristic
         for (int i = 0; i < path.length; i++){//path cicle
             for (int j = 0; j < beta.length; j++){//existing nodes cicle
                 if (beta[j].getNodename().equals(path[i])){//if node/name match...
@@ -169,16 +171,16 @@ public class IAmen {
         while (goTo.getNodename().equals("knowhere")){//while no waypoint is found
             for (int i = 0; i < verlist.length; i++){//cicle thru vertexes...
                 a = heuristic(verlist[i], next);//estimation value
-                if (a <= heur ){//to find the smallest cost/heuristic
+                if (a <= heur){//to find the smallest cost/heuristic
                     tempcost = cost + heuristic(verlist[i], next);//temporary cost + heuristic
                     heur = heuristic(verlist[i], next);//estimation recalculation
                     goTo = verlist[i];//new waypoint found
                 }
             }
             heur = heur + 2;//if estimation is > all vertexes
-    }
-        System.out.println(goTo.getNodename());//prints waypoint in the console
-        v.setGas(tempcost);
+        }
+        myway.add(goTo);//inserts waypoint
+        v.setGas(tempcost);//subtracts gascost
         if (goTo != next){//if waypoint != destination
             aStar(goTo,path,tempcost);//recall method with new root/same path
         }else{
@@ -223,6 +225,10 @@ public class IAmen {
         System.out.println("Partida de ");
         System.out.println(alfa[0].getNodename());
         aStar(alfa[0], path, 0);
-        
+        if (!myway.isEmpty()){
+            for (int i = 0; i < myway.size(); i++){
+                System.out.println(myway.get(i).getNodename());
+            }
+        }
     }
 }
