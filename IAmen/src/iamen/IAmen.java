@@ -123,17 +123,19 @@ public class IAmen {
     lon = |lonA-lonB|
     lat *40% of 25km + lon *40%30km
     */
-    
+
     //calculates the heuristic from one node to another
     public static int heuristic(node a, node b){
         int lat = a.getLat() - b.getLat();
         int lon = a.getLon() - b.getLon();
+
         if (lat < 0){
             lat = lat * -1;
         }
         if (lon < 0){
             lon = lon * -1;
         }
+
         lat = lat * 12;
         lon = lon * 14;
         return lat + lon;
@@ -198,12 +200,13 @@ public class IAmen {
         }
         return newpath;
     }
-    
+  
     public static void main(String[] args) {
         
         Scanner read= new Scanner(System.in);
         
-        
+        node alfa[] = new node[18];
+
         alfaNodes(alfa);      
         alfaInsert(alfa);
         //printAlfa(alfa);//uncoment to enable
@@ -213,6 +216,7 @@ public class IAmen {
         String[] path = new String[a];
         read.nextLine();
         for (int i = 0; i < a; i++){
+
             System.out.println("Listar paragens - Introduzir nomes dos locais de entrega: ");
             path[i] = read.nextLine();//loop insert for full path stop names
         }
