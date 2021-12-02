@@ -2,7 +2,7 @@
 package iamen;
 
 public class van {
-    private int gas = 100;
+    private int gas = 300;
     private int space = 20;
     
     public van(){
