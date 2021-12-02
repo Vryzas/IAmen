@@ -1,6 +1,6 @@
+
 package iamen;
 
-import java.util.HashMap;
 import java.util.Scanner;
 /**
  *
@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class IAmen {
     
     static node alfa[] = new node[18];
+    static van v = new van();
     /*
     van = 20 "slots"
     1big package = 9
@@ -27,18 +28,18 @@ public class IAmen {
         alfa[3] = new node("Aveiro", false,10,1);
         alfa[4] = new node("Guimaraes", true,4,4);
         alfa[5] = new node("Viana do Castelo", true,2,1);
-        alfa[6] = new node("Bragança", false,2,9);
+        alfa[6] = new node("Braganca", false,2,9);
         alfa[7] = new node("Vila Real", false,5,7);
         alfa[8] = new node("Amarante", false,6,5);
-        alfa[9] = new node("Póvoa de Varzim", false,4,1);
+        alfa[9] = new node("Povoa de Varzim", false,4,1);
         alfa[10] = new node("Viseu", true,10,6);
         alfa[11] = new node("Figueira da Foz", false,13,1);
         alfa[12] = new node("Coimbra", true,12,3);
-        alfa[13] = new node("Santarém", false,16,4);
+        alfa[13] = new node("Santarem", false,16,4);
         alfa[14] = new node("Guarda", false,10,8);
-        alfa[15] = new node("Castelo branco", false,14,8);
-        alfa[16] = new node("Évora", true,20,6);
-        alfa[17] = new node("Setúbal", false,20,1);
+        alfa[15] = new node("Castelo Branco", false,14,8);
+        alfa[16] = new node("Evora", true,20,6);
+        alfa[17] = new node("Setubal", false,20,1);
     }
     
     //creates the node tree
@@ -123,17 +124,19 @@ public class IAmen {
     lon = |lonA-lonB|
     lat *40% of 25km + lon *40%30km
     */
-    
+
     //calculates the heuristic from one node to another
     public static int heuristic(node a, node b){
         int lat = a.getLat() - b.getLat();
         int lon = a.getLon() - b.getLon();
+
         if (lat < 0){
             lat = lat * -1;
         }
         if (lon < 0){
             lon = lon * -1;
         }
+
         lat = lat * 12;
         lon = lon * 14;
         return lat + lon;
@@ -162,26 +165,27 @@ public class IAmen {
         node next = nextVertex(alfa, path, root);
         int heur = heuristic(root, next);//initial heuristic
         int tempcost = cost + heur;//temporary cost
-        node goTo = new node();
-        int a = 0;
-        while (goTo.getNodename().equals("knowhere")){
+        node goTo = new node();//waypoint node
+        int a;//debug var
+        while (goTo.getNodename().equals("knowhere")){//while no waypoint is found
             for (int i = 0; i < verlist.length; i++){//cicle thru vertexes...
-                a = heuristic(verlist[i], next);
+                a = heuristic(verlist[i], next);//estimation value
                 if (a <= heur ){//to find the smallest cost/heuristic
-                    tempcost = cost + heuristic(verlist[i], next);
-                    heur = heuristic(verlist[i], next);
-                    goTo = verlist[i];
+                    tempcost = cost + heuristic(verlist[i], next);//temporary cost + heuristic
+                    heur = heuristic(verlist[i], next);//estimation recalculation
+                    goTo = verlist[i];//new waypoint found
                 }
             }
-            heur = heur + 2;
+            heur = heur + 2;//if estimation is > all vertexes
     }
-        System.out.println(goTo.getNodename());
-        if (goTo != next){
-            aStar(goTo,path,tempcost);
+        System.out.println(goTo.getNodename());//prints waypoint in the console
+        v.setGas(tempcost);
+        if (goTo != next){//if waypoint != destination
+            aStar(goTo,path,tempcost);//recall method with new root/same path
         }else{
-            if (path.length!=1){
-                path = newPath(path, next);//updates path
-                aStar(goTo,path,tempcost);
+            if (path.length!=1){//if not last point
+                path = newPath(path, next);//updates path to remove waypoint 
+                aStar(goTo,path,tempcost);//recalls method with new root & path
             }
         }
     }
@@ -198,11 +202,10 @@ public class IAmen {
         }
         return newpath;
     }
-    
+  
     public static void main(String[] args) {
         
         Scanner read= new Scanner(System.in);
-        
         
         alfaNodes(alfa);      
         alfaInsert(alfa);
@@ -212,10 +215,15 @@ public class IAmen {
         int a = read.nextInt();//insert the nr of path stops
         String[] path = new String[a];
         read.nextLine();
+        
+        System.out.println("Listar paragens - Introduzir nomes dos locais de entrega: ");
         for (int i = 0; i < a; i++){
-            System.out.println("Listar paragens - Introduzir nomes dos locais de entrega: ");
             path[i] = read.nextLine();//loop insert for full path stop names
         }
+        System.out.println("O seu percurso está a ser calculado.");
+        System.out.println("Partida de ");
+        System.out.println(alfa[0].getNodename());
         aStar(alfa[0], path, 0);
+        
     }
 }

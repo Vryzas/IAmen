@@ -13,7 +13,7 @@ public class van {
     }
 
     public void setGas(int gas) {
-        this.gas = gas;
+        this.gas = this.gas - gas;
     }
 
     public int getSpace() {
