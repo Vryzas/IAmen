@@ -8,6 +8,7 @@ import java.util.Scanner;
 public class IAmen {
     
     static node alfa[] = new node[18];
+    static van v = new van();
     /*
     van = 20 "slots"
     1big package = 9
@@ -163,26 +164,27 @@ public class IAmen {
         node next = nextVertex(alfa, path, root);
         int heur = heuristic(root, next);//initial heuristic
         int tempcost = cost + heur;//temporary cost
-        node goTo = new node();
-        int a = 0;
-        while (goTo.getNodename().equals("knowhere")){
+        node goTo = new node();//waypoint node
+        int a;//debug var
+        while (goTo.getNodename().equals("knowhere")){//while no waypoint is found
             for (int i = 0; i < verlist.length; i++){//cicle thru vertexes...
-                a = heuristic(verlist[i], next);
+                a = heuristic(verlist[i], next);//estimation value
                 if (a <= heur ){//to find the smallest cost/heuristic
-                    tempcost = cost + heuristic(verlist[i], next);
-                    heur = heuristic(verlist[i], next);
-                    goTo = verlist[i];
+                    tempcost = cost + heuristic(verlist[i], next);//temporary cost + heuristic
+                    heur = heuristic(verlist[i], next);//estimation recalculation
+                    goTo = verlist[i];//new waypoint found
                 }
             }
-            heur = heur + 2;
+            heur = heur + 2;//if estimation is > all vertexes
     }
-        System.out.println(goTo.getNodename());
-        if (goTo != next){
-            aStar(goTo,path,tempcost);
+        System.out.println(goTo.getNodename());//prints waypoint in the console
+        v.setGas(tempcost);
+        if (goTo != next){//if waypoint != destination
+            aStar(goTo,path,tempcost);//recall method with new root/same path
         }else{
-            if (path.length!=1){
-                path = newPath(path, next);//updates path
-                aStar(goTo,path,tempcost);
+            if (path.length!=1){//if not last point
+                path = newPath(path, next);//updates path to remove waypoint 
+                aStar(goTo,path,tempcost);//recalls method with new root & path
             }
         }
     }
@@ -217,7 +219,8 @@ public class IAmen {
         for (int i = 0; i < a; i++){
             path[i] = read.nextLine();//loop insert for full path stop names
         }
-        System.out.println("Partida do: ");
+        System.out.println("O seu percurso está a ser calculado.");
+        System.out.println("Partida de ");
         System.out.println(alfa[0].getNodename());
         aStar(alfa[0], path, 0);
         
