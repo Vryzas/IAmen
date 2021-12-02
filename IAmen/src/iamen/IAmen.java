@@ -1,6 +1,6 @@
-
 package iamen;
 
+import java.util.HashMap;
 import java.util.Scanner;
 /**
  *
@@ -8,6 +8,7 @@ import java.util.Scanner;
  */
 public class IAmen {
     
+    static node alfa[] = new node[18];
     /*
     van = 20 "slots"
     1big package = 9
@@ -24,13 +25,13 @@ public class IAmen {
         alfa[1] = new node("Lisboa", true,18,1);
         alfa[2] = new node("Braga", false,3,3);
         alfa[3] = new node("Aveiro", false,10,1);
-        alfa[4] = new node("Guimarães", true,4,4);
+        alfa[4] = new node("Guimaraes", true,4,4);
         alfa[5] = new node("Viana do Castelo", true,2,1);
         alfa[6] = new node("Bragança", false,2,9);
-        alfa[7] = new node("Vila Real", true,6,6);
-        alfa[8] = new node("Amarante", false,6,4);
+        alfa[7] = new node("Vila Real", false,5,7);
+        alfa[8] = new node("Amarante", false,6,5);
         alfa[9] = new node("Póvoa de Varzim", false,4,1);
-        alfa[10] = new node("Viseu", true,10,5);
+        alfa[10] = new node("Viseu", true,10,6);
         alfa[11] = new node("Figueira da Foz", false,13,1);
         alfa[12] = new node("Coimbra", true,12,3);
         alfa[13] = new node("Santarém", false,16,4);
@@ -122,63 +123,90 @@ public class IAmen {
     lon = |lonA-lonB|
     lat *40% of 25km + lon *40%30km
     */
+
+    //calculates the heuristic from one node to another
     public static int heuristic(node a, node b){
-        int lat =(int) ((a.getLat()-b.getLat()) * (0.45*25));
-        int lon = (int) (a.getLon()-b.getLon() * (0.45*30));
+        int lat = a.getLat() - b.getLat();
+        int lon = a.getLon() - b.getLon();
+
         if (lat < 0){
             lat = lat * -1;
         }
         if (lon < 0){
             lon = lon * -1;
         }
-        return lat+lon;
+
+        lat = lat * 12;
+        lon = lon * 14;
+        return lat + lon;
     }
     
-     //next node finder
-    public static node findNext(HashMap zed, node end){
-        /*https://www.geeksforgeeks.org/traverse-through-a-hashmap-in-java/
-        int besth = heuristic(zed[0], end);
-        int heur;*/
-        node ret = null;
-       /* for (int i = 0; i <zed.length; i++){
-            heur = heuristic(zed[i], end);
-            if (heur < besth){
-                besth = heur;
-                ret = zed[i];
+    //finds the next node in path
+    public static node nextVertex(node[] beta, String[] path, node root){
+        node ret = new node();//return node
+        int tempheur = 200;//temporay heuristic
+        for (int i = 0; i < path.length; i++){//path cicle
+            for (int j = 0; j < beta.length; j++){//existing nodes cicle
+                if (beta[j].getNodename().equals(path[i])){//if node/name match...
+                    if (heuristic(root, beta[j]) < tempheur){//estimates h(n)
+                        tempheur = heuristic(beta[j],root);//if h(n) < than temp
+                        ret = beta[j];//next node in path
+                    }
+                }
             }
-        }*/
-        return ret;
+            
+        }
+        return ret;//returns the node with least distance to root
     }
     
-    /*
-        *include a total cost variable
-        include an extimated cost variable (total cost + estimation)
-        step 1 save alfa[0] vertices to an array with .getTree()
-        step 2 find the shortest distance in the vertices
-        step 3 replace the array with the next vertice 'vertices'
-        step 4 add the distance of the shortest vertice and
-        step 5 compare with previous 
-        step 6 if shorter step3
-        step 7 else return to alfa[0] and go with 2nd shortest vertice
-        step 8 go step 3 in 2nd shortest vertice
-        */
-    
-    
-    public static void aStar(node[] alfa, String[] path){
-        int cam = 0;
-        int rout = 0;
-        String next = path[cam];//next node to visit
-        HashMap<node, Integer> z = alfa[rout].getVertices();//vertices from root node
-        node end = alfa[alfa.length-1];//last node of the chosen path
-        node nextnode = findNext(z, end);//finds the next node to go to
-        System.out.println(nextnode.getNodename());
+    public static void aStar(node root, String[] path, int cost){
+        node[] verlist = root.getTree(); //get vertex list
+        node next = nextVertex(alfa, path, root);
+        int heur = heuristic(root, next);//initial heuristic
+        int tempcost = cost + heur;//temporary cost
+        node goTo = new node();
+        int a = 0;
+        while (goTo.getNodename().equals("knowhere")){
+            for (int i = 0; i < verlist.length; i++){//cicle thru vertexes...
+                a = heuristic(verlist[i], next);
+                if (a <= heur ){//to find the smallest cost/heuristic
+                    tempcost = cost + heuristic(verlist[i], next);
+                    heur = heuristic(verlist[i], next);
+                    goTo = verlist[i];
+                }
+            }
+            heur = heur + 2;
+    }
+        System.out.println(goTo.getNodename());
+        if (goTo != next){
+            aStar(goTo,path,tempcost);
+        }else{
+            if (path.length!=1){
+                path = newPath(path, next);//updates path
+                aStar(goTo,path,tempcost);
+            }
+        }
     }
     
+    public static String [] newPath(String[] path,node next){
+        String[] newpath = new String[path.length-1];
+        String remove = next.getNodename();
+        int j = 0;
+        for (int i = 0; i < path.length; i++){
+            if(!path[i].equals(remove)){
+                newpath[j] = path[i];
+                j++;
+            }
+        }
+        return newpath;
+    }
+  
     public static void main(String[] args) {
         
         Scanner read= new Scanner(System.in);
         
         node alfa[] = new node[18];
+
         alfaNodes(alfa);      
         alfaInsert(alfa);
         //printAlfa(alfa);//uncoment to enable
@@ -188,10 +216,10 @@ public class IAmen {
         String[] path = new String[a];
         read.nextLine();
         for (int i = 0; i < a; i++){
-            System.out.println("insere o proximo nó do caminho:");
-            path[i] = read.nextLine();
-            //loop insert for full path stop names
+
+            System.out.println("Listar paragens - Introduzir nomes dos locais de entrega: ");
+            path[i] = read.nextLine();//loop insert for full path stop names
         }
-        aStar(alfa, path);
+        aStar(alfa[0], path, 0);
     }
 }
