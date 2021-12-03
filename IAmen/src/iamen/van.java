@@ -16,6 +16,10 @@ public class van {
         this.gas = this.gas - gas;
     }
 
+    public void setGasMax() {
+        gas = 300;
+    }
+    
     public int getSpace() {
         return space;
     }
