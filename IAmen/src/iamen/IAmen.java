@@ -11,7 +11,7 @@ public class IAmen {
     
     static node alfa[] = new node[18];
     static van v = new van();
-    static ArrayList<node> myway = new ArrayList<>();
+    static ArrayList<vertex> myway = new ArrayList<>();
     /*
     van = 20 "slots"
     1big package = 9
@@ -39,7 +39,7 @@ public class IAmen {
         alfa[12] = new node("Coimbra", true,12,3);
         alfa[13] = new node("Santarem", false,16,4);
         alfa[14] = new node("Guarda", false,10,8);
-        alfa[15] = new node("Castelo Branco", false,14,8);
+        alfa[15] = new node("Castelo Branco", true,14,8);
         alfa[16] = new node("Evora", true,20,6);
         alfa[17] = new node("Setubal", false,20,1);
     }
@@ -121,24 +121,21 @@ public class IAmen {
         }
     }
     
-    /*direct path estimation
+    /*direct path estimation formulae "heuristic()" method
     lat = |latA-latB|
     lon = |lonA-lonB|
-    lat *40% of 25km + lon *40%30km
+    lat *45% of 25km + lon *45% of 30km
     */
-
     //calculates the heuristic from one node to another
     public static int heuristic(node a, node b){
-        int lat = a.getLat() - b.getLat();
-        int lon = a.getLon() - b.getLon();
-
-        if (lat < 0){
+        int lat = a.getLat() - b.getLat();//latitud value
+        int lon = a.getLon() - b.getLon();//longitude value
+        if (lat < 0){//executes module of value
             lat = lat * -1;
         }
         if (lon < 0){
             lon = lon * -1;
         }
-
         lat = lat * 12;
         lon = lon * 14;
         return lat + lon;
@@ -164,7 +161,7 @@ public class IAmen {
     
     public static void aStar(node root, String[] path, int cost){
         node[] verlist = root.getTree(); //get vertex list
-        node next = nextVertex(alfa, path, root);
+        node next = nextVertex(alfa, path, root);//next delivery point
         int heur = heuristic(root, next);//initial heuristic
         int tempcost = cost + heur;//temporary cost
         node goTo = new node();//waypoint node
@@ -180,8 +177,27 @@ public class IAmen {
             }
             heur = heur + 2;//if estimation is > all vertexes
         }
-        myway.add(goTo);//inserts waypoint
-        v.setGas(tempcost);//subtracts gascost
+       /* goTo = theBest(root, next, heur);//autonomy management "solution"
+        tempcost = cost + heuristic(goTo, next);
+        if (tempcost > v.getGas()){
+            if(root.hasGas()){
+                v.setGasMax();
+            }else{
+                node z = goTo;
+                goTo = secondBest(root, next, z, heur);
+                tempcost = cost + heuristic(goTo, next);
+                if (tempcost > v.getGas()){
+                    goTo = thirdBest(root, next, heur);
+                    tempcost = cost + heuristic(goTo, next);
+                }
+            }
+        }*/
+       
+        v.setGas(tempcost);//subtracts gas cost
+        if (goTo.hasGas()){//if waypoint ha gas
+           v.setGasMax();//refuels
+        }
+        myway.add(new vertex (goTo, v.getGas()));//inserts waypoint
         if (goTo != next){//if waypoint != destination
             aStar(goTo,path,tempcost);//recall method with new root/same path
         }else{
@@ -191,6 +207,51 @@ public class IAmen {
             }
         }
     }
+    
+   /* public static node theBest(node a, node b, int heur){
+        node d = new node();
+        node[] e = a.getTree();
+        int h;
+        for(int i = 0; i < e.length; i++){
+            h = heuristic(e[i],b);
+            if(h < heur){
+                d=e[i];
+            }
+        }
+        return d;
+    }
+    
+    public static node secondBest(node a, node b, node c, int heur){
+        node d = new node();
+        node[] e = a.getTree();
+        int h;
+        for(int i = 0; i < e.length; i++){
+            if (e[i]!=c){
+                h = heuristic(e[i],b);
+                if(h < heur){
+                    d=e[i];
+                }
+            }
+        }
+        return d;
+    }
+    public static node thirdBest(node a, node b, int heur){
+        node d = new node();
+        node[] e = a.getTree();
+        int h;
+        do{
+            for(int i = 0; i < e.length; i++){
+                h = heuristic(e[i],b);
+                if(e[i].hasGas()){
+                    if(h < heur){
+                        d=e[i];
+                    }
+                }
+            }
+            heur = heur + 10;
+        }while(d.getNodename().equals("knowhere"));
+        return d;
+    }*/
     
     public static String [] newPath(String[] path,node next){
         String[] newpath = new String[path.length-1];
@@ -228,7 +289,8 @@ public class IAmen {
         aStar(alfa[0], path, 0);
         if (!myway.isEmpty()){
             for (int i = 0; i < myway.size(); i++){
-                System.out.println(myway.get(i).getNodename());
+                System.out.println(myway.get(i).getNodex().getNodename());
+                
             }
         }
     }
